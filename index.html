@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+	<link href="css/style.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAMYCz57n3h-fQ3TKIwXrF4L5wKtw9GGS0&sensor=true"></script>
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<script type="text/javascript" src="js/jquery-gmap.js"></script>
+
+    
+	<meta charset="UTF-8">
+	<title>NASA - ATM</title>
+	<script>
+		var flights = [];
+		var airport = [];
+		var planes = [];
+		var selectedPlane = {};
+		
+		$(document).ready(function () {
+			$.ajax({
+				type: "GET",
+				url: "xml/airports.xml",
+				dataType: "xml",
+				success: function (xml) { airportParser(xml, "YYZ"); }
+			});
+			$.ajax({
+				type: "GET",
+				url: "xml/flight.xml",
+				dataType: "xml",
+				success: function (xml) { flightParser(xml, "YYZ"); }
+			});
+			$.ajax({
+				type: "GET",
+				url: "xml/planes.xml",
+				dataType: "xml",
+				success: function (xml) { planeParser(xml, "YYZ"); }
+			});
+			
+			
+		});
+		
+		
+		
+		function airportParser(xml, code) {		 		 
+			airportXML = $(xml).find("Airport").filter(function() {
+                return $(this).find("Code").text() == code;
+            });				
+				
+				var myAirport = {
+					name: airportXML.find("Name").text(),
+					city: airportXML.find("City").text(),
+					code: airportXML.find("Code").text(),
+					capacity: airportXML.find("Capacity").text(),
+					longitude: airportXML.find("Long").text(),
+					latitude: airportXML.find("Lat").text()
+				};
+				airport[myAirport.code] = myAirport;
+				
+				$(".airports").append('<div class="span6"><strong>Airport</strong><div class="airport-name">Name: <span>' + myAirport.name + '</span></div><div class="airport-city">City: <span>' + myAirport.city + '</span></div><div class="airport-code">Code: <span>' + myAirport.code + '</span></div><div class="airport-capacity">Capacity: <span>' + myAirport.capacity + ' Planes</span></div></div>');
+					 
+		}
+		function flightParser(xml, code) {		 		 
+			flightXML = $(xml).find("Flight").filter(function() {
+                return $(this).find("Source").text() == code;
+            });				
+				var i = 0;
+				flightXML.each(function(){
+					
+					var thisFlight = { 
+						number: flightXML.find("Number").eq(i).text(), 
+						airline: flightXML.find("Airline").eq(i).text(),
+						source: flightXML.find("Source").eq(i).text(),
+						destination: flightXML.find("Destination").eq(i).text(),
+						duration: flightXML.find("Duration").eq(i).text(),
+						date: flightXML.find("Date").eq(i).text(),
+						stops: flightXML.find("Stops").eq(i).text()
+						};
+					flights[thisFlight.number] = thisFlight;
+					$(".flights").append('<li><div class="flight-number">Flight #: <span>' + thisFlight.number + '</span></div><div class="flight-airline">Airline: <span>' + thisFlight.airline + '</span></div><div class="flight-source">Leaving From: <span>' + thisFlight.source + '</span></div><div class="flight-destination">Destination: <span>' + thisFlight.destination + '</span></div><div class="flight-duration">Duration: <span>' + thisFlight.duration + '</span></div><div class="flight-date">Date: <span>' + thisFlight.date + '</span></div><div class="flight-stops">Stops: <span>' + thisFlight.stops + '</span></div><button class="fly-button" disabled>Fly!</button></li>');
+					i++;
+				});
+					 
+		}
+		function planeParser(xml, code) {		 		 
+			planeXML = $(xml).find("Plane").filter(function() {
+                return $(this).find("Airport").text() == code;
+            });				
+				var i = 0;
+				planeXML.each(function(){
+					var planeID = "plane00" + i;
+					var thisPlane = { 
+						id: planeID,
+						manufacture: planeXML.find("Manufacture").eq(i).text(), 
+						model: planeXML.find("Model").eq(i).text(),
+						type: planeXML.find("Type").eq(i).text(),
+						engine: planeXML.find("Engine").eq(i).text(),
+						airport: planeXML.find("Airport").eq(i).text()
+						};
+					
+					planes[planeID] = thisPlane;
+					$(".planes").append('<li class="plane-li" onclick="planeClick($(this));"><div class="plane-id">' + thisPlane.id + '</div><div class="plane-manufacture">Manufacture: <span>' + thisPlane.manufacture + '</span></div><div class="plane-model">Model: <span>' + thisPlane.model + '</span></div><div class="plane-type">Type: <span>' + thisPlane.type + '</span></div><div class="plane-engine">Engine: <span>' + thisPlane.engine + '</span></div>	<div class="plane-airport">Airport: <span>' + thisPlane.airport + '</span></div></li>');
+					i++;
+				});
+					 
+		}
+		function planeClick(theElement){
+			//$(".plane-li").click(function() {
+				$(".planes li").css("background-color", "none");
+				theElement.css("background-color", "yellow");
+				selectedPlane.id = theElement.children(".plane-id").text();
+				selectedPlane.manufacture = theElement.children(".plane-manufacture").text();
+				selectedPlane.model = theElement.children(".plane-model").text();
+				selectedPlane.type = theElement.children(".plane-type").text();
+				selectedPlane.engine = theElement.children(".plane-engine").text();
+				selectedPlane.airport = theElement.children(".plane-airport").text();
+				
+				$(".current-plane").text("Selected Plane: " + selectedPlane.id);
+				$(".fly-button").removeAttr('disabled');
+			//});
+		}
+		
+	</script>
+	
+</head>
+<body>
+	<div class="container">
+		<header>
+			<div class="navbar">
+				<div class="navbar-inner">
+					<a class="brand" href="index.html">NASA - ATM</a>
+					<ul class="nav">
+						<li class="active current-plane"></li>
+
+					</ul>
+				</div>
+			</div>
+		</header>
+		<section>
+			<div class="row airports">	
+				
+			</div>
+			<hr/>
+			<div class="row">
+				<div class="span12">
+					<strong>Available planes for YYZ</strong>
+					<ul class="planes">
+						
+					</ul>
+				</div>
+			</div>
+			<div class="row">
+				<div class="span12">
+					<strong>Available flights for YYZ</strong>
+					<ul class="flights">
+						
+					</ul>
+				</div>
+			</div>
+			<div class="row">
+				<div class="span12">
+					<div id="map"></div>
+				</div>
+			</div>
+		</section>
+		<footer>
+			<hr/>
+			<small class="muted">Designed by Salman Shakeel for NASA Space Apps Challenge Toronto</small>
+		</footer>
+	</div>
+	<script type="text/javascript">
+		$(function() {
+			$("#map").gMap();
+		});
+	</script>
+	<!--<script type="text/javascript">
+		var map;
+		var toronto = new google.maps.LatLng(43.676667, -79.630556);
+		var ottawa = new google.maps.LatLng(45.3225, -75.667222);
+		function initialize() {
+			var mapOptions = {
+				zoom: 7,
+				center: toronto,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+			
+			map = new google.maps.Map(document.getElementById('map-canvas'),
+			  mapOptions);
+			var marker=new google.maps.Marker({
+			  position: toronto,
+			  icon:'img/plane.png'
+			});
+			marker.setMap(map);
+			var myTrip=[toronto, ottawa];
+			var flightPath=new google.maps.Polyline({
+			  path:myTrip,
+			  strokeColor:"#0000FF",
+			  strokeOpacity:0.8,
+			  strokeWeight:2
+			  });
+
+			flightPath.setMap(map);
+		}
+
+		google.maps.event.addDomListener(window, 'load', initialize);
+    </script>-->
+
+</body>
+</html>

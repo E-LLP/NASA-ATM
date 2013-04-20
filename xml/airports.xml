@@ -5,11 +5,15 @@
     <City>Toronto</City>
     <Code>YYZ</Code>
 	<Capacity>5</Capacity>
+	<Lat>43.676667</Lat>
+	<Long>-79.630556</Long>
   </Airport>
   <Airport>
-    <Name>Billy Bishop Toronto City Airport</Name>
-    <City>Toronto</City>
-    <Code>YTZ</Code>
+    <Name>Ottawa Macdonald-Cartier International Airport</Name>
+    <City>Ottawa</City>
+    <Code>YOW</Code>
 	<Capacity>3</Capacity>
+	<Lat>45.3225</Lat>
+	<Long>-75.667222</Long>
   </Airport>
 </Airports>

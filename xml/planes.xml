@@ -4,12 +4,56 @@
 	<Manufacture>Embraer</Manufacture>
 	<Model>190</Model>
 	<Type>E190</Type>
-	<Engines>2 Jet Engines</Engines>
+	<Engine>2 Jet Engine</Engine>
+	<Airport>YYZ</Airport>
   </Plane>
   <Plane>
-	<Manufacture>AIrbus</Manufacture>
+	<Manufacture>Airbus</Manufacture>
 	<Model>A-320</Model>
 	<Type>A320</Type>
-	<Engines>2 Jet Engines</Engines>
+	<Engine>2 Jet Engine</Engine>
+	<Airport>YTZ</Airport>
+  </Plane>
+  <Plane>
+	<Manufacture>Embraer</Manufacture>
+	<Model>190</Model>
+	<Type>E190</Type>
+	<Engine>2 Jet Engine</Engine>
+	<Airport>YYZ</Airport>
+  </Plane>
+  <Plane>
+	<Manufacture>Airbus</Manufacture>
+	<Model>A-320</Model>
+	<Type>A320</Type>
+	<Engine>2 Jet Engine</Engine>
+	<Airport>YYZ</Airport>
+  </Plane>
+  <Plane>
+	<Manufacture>Embraer</Manufacture>
+	<Model>190</Model>
+	<Type>E190</Type>
+	<Engine>2 Jet Engine</Engine>
+	<Airport>YYZ</Airport>
+  </Plane>
+  <Plane>
+	<Manufacture>Airbus</Manufacture>
+	<Model>A-320</Model>
+	<Type>A320</Type>
+	<Engine>2 Jet Engine</Engine>
+	<Airport>YYZ</Airport>
+  </Plane>
+  <Plane>
+	<Manufacture>Airbus</Manufacture>
+	<Model>A-320</Model>
+	<Type>A320</Type>
+	<Engine>2 Jet Engine</Engine>
+	<Airport>YTZ</Airport>
+  </Plane>
+  <Plane>
+	<Manufacture>Airbus</Manufacture>
+	<Model>A-320</Model>
+	<Type>A320</Type>
+	<Engine>2 Jet Engine</Engine>
+	<Airport>YTZ</Airport>
   </Plane>
 </Planes>
