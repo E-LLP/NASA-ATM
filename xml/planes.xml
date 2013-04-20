@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Planes>
+  <Plane>
+	<Manufacture>Embraer</Manufacture>
+	<Model>190</Model>
+	<Type>E190</Type>
+	<Engines>2 Jet Engines</Engines>
+  </Plane>
+  <Plane>
+	<Manufacture>AIrbus</Manufacture>
+	<Model>A-320</Model>
+	<Type>A320</Type>
+	<Engines>2 Jet Engines</Engines>
+  </Plane>
+</Planes>

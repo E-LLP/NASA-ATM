@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Airports>
+  <Airport>
+    <Name>Pearson International Airport</Name>
+    <City>Toronto</City>
+    <Code>YYZ</Code>
+	<Capacity>5</Capacity>
+  </Airport>
+  <Airport>
+    <Name>Billy Bishop Toronto City Airport</Name>
+    <City>Toronto</City>
+    <Code>YTZ</Code>
+	<Capacity>3</Capacity>
+  </Airport>
+</Airports>

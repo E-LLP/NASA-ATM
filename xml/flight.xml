@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Flights>
+  <Flight>
+	<Number>AC757</Number>
+	<Airline>Air Canada</Airline>
+	<Source>YYZ</Source>
+	<Destination>YTZ</Destination>
+	<Duration>300</Duration>
+	<Stop></Stop>
+  </Flight>
+  <Flight>
+	<Number>AC345</Number>
+	<Airline>Air Canada</Airline>
+	<Source>YTZ</Source>
+	<Destination>YYZ</Destination>
+	<Duration>700</Duration>
+	<Stop></Stop>
+  </Flight>
+</Planes>
