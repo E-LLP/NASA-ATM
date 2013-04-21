@@ -3,9 +3,28 @@ NASA-ATM
 
 "No Delays" Air Traffic Management from NASA Space Apps Challenge (Toronto)
 
-This project is solving the "No Delays" Air Traffic Management challenge.
+Basic Idea of the game:
+=======================
+- This is supposed to be a browser-based simulation game where users assume control of their local airport. 
+- You start off with a fixed number of planes of basic types (upgradable later).
+- You have a fixed number to flights that you need to direct to their corresponding destinations. 
+- You score points for successfully delivering flights to their destinations, similar to how you would in a Civilization game.
+- Incoming flights to your airport need to be handled accordingly.
 
-An attempt to create an html/js based game/app where players assume the role of an air traffic controller. Airport, flight, planes and other type of data will be XML based for this project.
+Gameplay:
+=========
+- Users need to be aware of things like weather, destination airport capacity, and other real life factors while they direct their flights.
+- Points can be redeemed to purchased upgrades such as runways, better planes etc.
+- Maps to Earth to start with. Capibitlies of adding Maps of Other planets and other custom location is also planned.
+
+Single Player vs Multiplayer:
+=============================
+
+- Users will get to play against computer simulated airport controllers in a single player game.
+- Multiplayer game will let users interact with other users.
+
+Demo:
+=====
 
 (unfinished) Live Demo: [here](http://sshakeel.ca/projects/NASA-ATM/)
 
