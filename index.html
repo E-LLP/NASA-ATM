@@ -214,6 +214,7 @@
 		  movePlane(window.selectedPlane, window.flights[leButton.attr("flightNumber")]);
 		  leButton.attr("disabled", "disabled");
 		  leButton.html('Reached Destination');
+		  leButton.removeClass("fly-button").addclass("disabled-fly-button");
 		}
 		function movePlane(lePlane, leFlight){
 			$('#map').gmap3({
