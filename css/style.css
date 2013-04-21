@@ -3,3 +3,11 @@
 		height: 500px;
       }
 .planes li {display: inline-block; margin: 0 18px; border: 1px solid #ccc; border-radius: 3px; padding: 10px;}
+
+
+.airports div div {display: inline-block; margin: 0 9px;}
+
+.flights {list-style: none; margin: 0;}
+.flights li {padding: 9px;}
+.flights li:nth-child(odd){background: #e8e8e8;}
+.flights li div {display: inline-block; margin: 0 9px;}
