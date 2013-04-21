@@ -10,6 +10,7 @@ Basic Idea of the game:
 - You have a fixed number to flights that you need to direct to their corresponding destinations. 
 - You score points for successfully delivering flights to their destinations, similar to how you would in a Civilization game.
 - Incoming flights to your airport need to be handled accordingly.
+- Aim of this game is to get users to see the bigger picture behind flights and air traffic control in general.
 
 Gameplay:
 =========
