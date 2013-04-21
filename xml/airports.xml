@@ -24,4 +24,20 @@
 	<Lat>45.470556</Lat>
 	<Long>-73.740833</Long>
   </Airport>
+  <Airport>
+    <Name>John F. Kennedy International Airport</Name>
+    <City>New York</City>
+    <Code>JFK</Code>
+	<Capacity>4</Capacity>
+	<Lat>40.639722</Lat>
+	<Long>-73.778889</Long>
+  </Airport>
+  <Airport>
+    <Name>O'Hare International Airport</Name>
+    <City>Chicago</City>
+    <Code>ORD</Code>
+	<Capacity>4</Capacity>
+	<Lat>41.978611</Lat>
+	<Long>-87.904722</Long>
+  </Airport>
 </Airports>

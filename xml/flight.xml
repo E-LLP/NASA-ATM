@@ -27,4 +27,31 @@
 	<Date>12/27/2013</Date>
 	<Stops></Stops>
   </Flight>
+  <Flight>
+	<Number>AA333</Number>
+	<Airline>American Airlines</Airline>
+	<Source>YYZ</Source>
+	<Destination>ORD</Destination>
+	<Duration>3000</Duration>
+	<Date>10/23/2013</Date>
+	<Stops></Stops>
+  </Flight>
+  <Flight>
+	<Number>AA898</Number>
+	<Airline>American Airlines</Airline>
+	<Source>YYZ</Source>
+	<Destination>JFK</Destination>
+	<Duration>4000</Duration>
+	<Date>08/24/2013</Date>
+	<Stops></Stops>
+  </Flight>
+  <Flight>
+	<Number>AA909</Number>
+	<Airline>American Airlines</Airline>
+	<Source>YYZ</Source>
+	<Destination>JFK</Destination>
+	<Duration>7000</Duration>
+	<Date>09/27/2013</Date>
+	<Stops></Stops>
+  </Flight>
 </Flights>
