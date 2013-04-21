@@ -13,6 +13,7 @@
 	<meta charset="UTF-8">
 	<title>NASA - ATM</title>
 	<script>
+		window.homeAirport = "YYZ";
 		window.flights = [];
 		window.airport = [];
 		window.planes = [];
@@ -23,22 +24,23 @@
 				type: "GET",
 				url: "xml/airports.xml",
 				dataType: "xml",
-				success: function (xml) { airportParser(xml, "YYZ"); }
+				success: function (xml) { airportParser(xml, window.homeAirport); }
 			});
 			$.ajax({
 				type: "GET",
 				url: "xml/flight.xml",
 				dataType: "xml",
-				success: function (xml) { flightParser(xml, "YYZ"); }
+				success: function (xml) { flightParser(xml, window.homeAirport); }
 			});
 			$.ajax({
 				type: "GET",
 				url: "xml/planes.xml",
 				dataType: "xml",
-				success: function (xml) { planeParser(xml, "YYZ"); }
+				success: function (xml) { planeParser(xml, window.homeAirport); }
 			});
 			
-			
+			$("#homeAirport").text(window.homeAirport);
+			$("#homeAirport1").text(window.homeAirport);
 		});
 		
 		
@@ -58,7 +60,7 @@
 				
 				
 			});
-			$(".airports").append('<div class="span6"><strong>Airport</strong><div class="airport-name">Name: <span>' + window.airport[code].name + '</span></div><div class="airport-city">City: <span>' + window.airport[code].city + '</span></div><div class="airport-code">Code: <span>' + window.airport[code].code + '</span></div><div class="airport-capacity">Capacity: <span>' + window.airport[code].capacity + ' Planes</span></div><div class="airport-latitude">Latitude: <span>' + window.airport[code].latitude + '</span></div><div class="airport-longitude">Longitude: <span>' + window.airport[code].longitude + '</span></div></div>');
+			$(".airports").append('<div class="span12"><strong>Airport</strong><div class="airport-name">Name: <span>' + window.airport[code].name + '</span></div><div class="airport-city">City: <span>' + window.airport[code].city + '</span></div><div class="airport-code">Code: <span>' + window.airport[code].code + '</span></div><div class="airport-capacity">Capacity: <span>' + window.airport[code].capacity + ' Planes</span></div><div class="airport-latitude">Latitude: <span>' + window.airport[code].latitude + '</span></div><div class="airport-longitude">Longitude: <span>' + window.airport[code].longitude + '</span></div></div>');
 			
 			loadMap(window.airport[code]);
 			
@@ -93,7 +95,7 @@
             });				
 				var i = 0;
 				planeXML.each(function(){
-					var planeID = "plane00" + i;
+					var planeID = "plane00" + (i+1);
 					var thisPlane = { 
 						id: planeID,
 						manufacture: planeXML.find("Manufacture").eq(i).text(), 
@@ -115,6 +117,7 @@
 		}
 		function planeClick(theElement){
 			//$(".plane-li").click(function() {
+				
 				$(".planes li").css("background-color", "none");
 				theElement.css("background-color", "yellow");
 				window.selectedPlane.id = theElement.children(".plane-id").text();
@@ -171,14 +174,43 @@
 			$("#map").gmap3({
 				marker:{
 				  latLng:[thePlane.latitude, thePlane.longitude],
-				  options:{icon: "img/plane.png"},
+				  options:{
+					icon: "img/plane.png",
+					iconAnchor: [130, 130]
+				  },
 				  tag: thePlane.id,
 				  id: thePlane.id,
-				  animation: google.maps.Animation.DROP
+				  animation: google.maps.Animation.DROP,
+					events:{
+						  mouseover: function(marker, event, context){
+							var map = $(this).gmap3("get"),
+							  infowindow = $(this).gmap3({get:{name:"infowindow"}});
+							if (infowindow){
+							  infowindow.open(map, marker);
+							  infowindow.setContent(thePlane.id);
+							} else {
+							  $(this).gmap3({
+								infowindow:{
+								  anchor:marker, 
+								  options:{content: thePlane.id}
+								}
+							  });
+							}
+						  },
+						  mouseout: function(){
+							var infowindow = $(this).gmap3({get:{name:"infowindow"}});
+							if (infowindow){
+							  infowindow.close();
+							}
+						  }
+					}
+				  
+				  
 				}
 			 });
 		}
 		function actionFlight(leButton) {
+		  
 		  movePlane(window.selectedPlane, window.flights[leButton.attr("flightNumber")]);
 		  leButton.attr("disabled", "disabled");
 		  leButton.html('Reached Destination');
@@ -198,7 +230,30 @@
 				marker:{
 				  latLng:[lePlane.latitude, lePlane.longitude],
 				  options:{icon: "img/plane.png"},
-				  tag: lePlane.id
+				  tag: lePlane.id,
+				  events:{
+						  mouseover: function(marker, event, context){
+							var map = $(this).gmap3("get"),
+							  infowindow = $(this).gmap3({get:{name:"infowindow"}});
+							if (infowindow){
+							  infowindow.open(map, marker);
+							  infowindow.setContent(lePlane.id);
+							} else {
+							  $(this).gmap3({
+								infowindow:{
+								  anchor:marker, 
+								  options:{content: lePlane.id}
+								}
+							  });
+							}
+						  },
+						  mouseout: function(){
+							var infowindow = $(this).gmap3({get:{name:"infowindow"}});
+							if (infowindow){
+							  infowindow.close();
+							}
+						  }
+					}
 				},
 				polyline:{
 					options:{
@@ -237,7 +292,7 @@
 			<hr/>
 			<div class="row">
 				<div class="span12">
-					<strong>Available planes for YYZ</strong>
+					<strong>Available planes for <span id="homeAirport"></span></strong>
 					<ul class="planes">
 						
 					</ul>
@@ -245,7 +300,7 @@
 			</div>
 			<div class="row">
 				<div class="span12">
-					<strong>Available flights for YYZ</strong>
+					<strong>Available flights for <span id="homeAirport1"></span></strong>
 					<ul class="flights">
 						
 					</ul>
