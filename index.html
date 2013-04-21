@@ -173,23 +173,43 @@
 				  latLng:[thePlane.latitude, thePlane.longitude],
 				  options:{icon: "img/plane.png"},
 				  tag: thePlane.id,
+				  id: thePlane.id,
 				  animation: google.maps.Animation.DROP
 				}
 			 });
 		}
 		function actionFlight(leButton) {
 		  movePlane(window.selectedPlane, window.flights[leButton.attr("flightNumber")]);
+		  leButton.attr("disabled", "disabled");
+		  leButton.html('Reached Destination');
 		}
 		function movePlane(lePlane, leFlight){
-			$('#map').gmap3({action:'clear', tag:lePlane.id}).delay(3000);
+			$('#map').gmap3({
+				clear: {
+				  id: lePlane.id
+				}
+			  });
+			
+			//$('#map').gmap3({action:'clear', tag:lePlane.id});
 			lePlane.latitude = window.airport[leFlight.destination].latitude;
 			lePlane.longitude = window.airport[leFlight.destination].longitude;
-			alert(leFlight.destination);
+			//alert(leFlight.destination);
 			$("#map").gmap3({
 				marker:{
 				  latLng:[lePlane.latitude, lePlane.longitude],
 				  options:{icon: "img/plane.png"},
 				  tag: lePlane.id
+				},
+				polyline:{
+					options:{
+					  strokeColor: "#FF0000",
+					  strokeOpacity: 1.0,
+					  strokeWeight: 2,
+					  path:[
+						[window.airport[leFlight.source].latitude, window.airport[leFlight.source].longitude],
+						[window.airport[leFlight.destination].latitude, window.airport[leFlight.destination].longitude]
+					  ]
+					}
 				}
 			 });
 		}
