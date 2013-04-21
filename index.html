@@ -8,15 +8,15 @@
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAMYCz57n3h-fQ3TKIwXrF4L5wKtw9GGS0&sensor=true"></script>
 	<script src="http://code.jquery.com/jquery-latest.js"></script>
 	<script type="text/javascript" src="js/jquery-gmap.js"></script>
-
+	<script type="text/javascript" src="js/gmap3.min.js"></script>
     
 	<meta charset="UTF-8">
 	<title>NASA - ATM</title>
 	<script>
-		var flights = [];
-		var airport = [];
-		var planes = [];
-		var selectedPlane = {};
+		window.flights = [];
+		window.airport = [];
+		window.planes = [];
+		window.selectedPlane = {};
 		
 		$(document).ready(function () {
 			$.ajax({
@@ -44,22 +44,24 @@
 		
 		
 		function airportParser(xml, code) {		 		 
-			airportXML = $(xml).find("Airport").filter(function() {
-                return $(this).find("Code").text() == code;
-            });				
-				
+							
+			$(xml).find("Airport").each(function(){
 				var myAirport = {
-					name: airportXML.find("Name").text(),
-					city: airportXML.find("City").text(),
-					code: airportXML.find("Code").text(),
-					capacity: airportXML.find("Capacity").text(),
-					longitude: airportXML.find("Long").text(),
-					latitude: airportXML.find("Lat").text()
+					name: $(this).find("Name").text(),
+					city: $(this).find("City").text(),
+					code: $(this).find("Code").text(),
+					capacity: $(this).find("Capacity").text(),
+					longitude: $(this).find("Long").text(),
+					latitude: $(this).find("Lat").text()
 				};
-				airport[myAirport.code] = myAirport;
+				window.airport[myAirport.code] = myAirport;
 				
-				$(".airports").append('<div class="span6"><strong>Airport</strong><div class="airport-name">Name: <span>' + myAirport.name + '</span></div><div class="airport-city">City: <span>' + myAirport.city + '</span></div><div class="airport-code">Code: <span>' + myAirport.code + '</span></div><div class="airport-capacity">Capacity: <span>' + myAirport.capacity + ' Planes</span></div></div>');
-					 
+				
+			});
+			$(".airports").append('<div class="span6"><strong>Airport</strong><div class="airport-name">Name: <span>' + window.airport[code].name + '</span></div><div class="airport-city">City: <span>' + window.airport[code].city + '</span></div><div class="airport-code">Code: <span>' + window.airport[code].code + '</span></div><div class="airport-capacity">Capacity: <span>' + window.airport[code].capacity + ' Planes</span></div><div class="airport-latitude">Latitude: <span>' + window.airport[code].latitude + '</span></div><div class="airport-longitude">Longitude: <span>' + window.airport[code].longitude + '</span></div></div>');
+			
+			loadMap(window.airport[code]);
+			
 		}
 		function flightParser(xml, code) {		 		 
 			flightXML = $(xml).find("Flight").filter(function() {
@@ -77,12 +79,14 @@
 						date: flightXML.find("Date").eq(i).text(),
 						stops: flightXML.find("Stops").eq(i).text()
 						};
-					flights[thisFlight.number] = thisFlight;
-					$(".flights").append('<li><div class="flight-number">Flight #: <span>' + thisFlight.number + '</span></div><div class="flight-airline">Airline: <span>' + thisFlight.airline + '</span></div><div class="flight-source">Leaving From: <span>' + thisFlight.source + '</span></div><div class="flight-destination">Destination: <span>' + thisFlight.destination + '</span></div><div class="flight-duration">Duration: <span>' + thisFlight.duration + '</span></div><div class="flight-date">Date: <span>' + thisFlight.date + '</span></div><div class="flight-stops">Stops: <span>' + thisFlight.stops + '</span></div><button class="fly-button" disabled>Fly!</button></li>');
+					window.flights[thisFlight.number] = thisFlight;
+					
+					$(".flights").append('<li><div class="flight-number">Flight #: <span>' + thisFlight.number + '</span></div><div class="flight-airline">Airline: <span>' + thisFlight.airline + '</span></div><div class="flight-source">Leaving From: <span>' + thisFlight.source + '</span></div><div class="flight-destination">Destination: <span>' + thisFlight.destination + '</span></div><div class="flight-duration">Duration: <span>' + thisFlight.duration + '</span></div><div class="flight-date">Date: <span>' + thisFlight.date + '</span></div><div class="flight-stops">Stops: <span>' + thisFlight.stops + '</span></div><button onclick="actionFlight($(this));" flightNumber="' + thisFlight.number + '" class="fly-button" disabled>Fly!</button></li>');
 					i++;
 				});
 					 
 		}
+		
 		function planeParser(xml, code) {		 		 
 			planeXML = $(xml).find("Plane").filter(function() {
                 return $(this).find("Airport").text() == code;
@@ -99,8 +103,12 @@
 						airport: planeXML.find("Airport").eq(i).text()
 						};
 					
-					planes[planeID] = thisPlane;
-					$(".planes").append('<li class="plane-li" onclick="planeClick($(this));"><div class="plane-id">' + thisPlane.id + '</div><div class="plane-manufacture">Manufacture: <span>' + thisPlane.manufacture + '</span></div><div class="plane-model">Model: <span>' + thisPlane.model + '</span></div><div class="plane-type">Type: <span>' + thisPlane.type + '</span></div><div class="plane-engine">Engine: <span>' + thisPlane.engine + '</span></div>	<div class="plane-airport">Airport: <span>' + thisPlane.airport + '</span></div></li>');
+					window.planes[planeID] = thisPlane;
+					window.planes[planeID].latitude = airport[planes[planeID].airport].latitude;
+					window.planes[planeID].longitude = airport[planes[planeID].airport].longitude;
+					
+					$(".planes").append('<li class="plane-li" onclick="planeClick($(this));"><div class="plane-id">' + thisPlane.id + '</div><div class="plane-manufacture">Manufacture: <span>' + thisPlane.manufacture + '</span></div><div class="plane-model">Model: <span>' + thisPlane.model + '</span></div><div class="plane-type">Type: <span>' + thisPlane.type + '</span></div><div class="plane-engine">Engine: <span>' + thisPlane.engine + '</span></div>	<div class="plane-airport">Airport: <span>' + thisPlane.airport + '</span></div><div class="plane-latitude">Latitude: <span>' + window.planes[planeID].latitude + '</span></div><div class="plane-longitude">Longitude: <span>' + window.planes[planeID].longitude + '</span></div></li>');
+					addPlaneOnMap(window.planes[planeID]);
 					i++;
 				});
 					 
@@ -109,16 +117,81 @@
 			//$(".plane-li").click(function() {
 				$(".planes li").css("background-color", "none");
 				theElement.css("background-color", "yellow");
-				selectedPlane.id = theElement.children(".plane-id").text();
-				selectedPlane.manufacture = theElement.children(".plane-manufacture").text();
-				selectedPlane.model = theElement.children(".plane-model").text();
-				selectedPlane.type = theElement.children(".plane-type").text();
-				selectedPlane.engine = theElement.children(".plane-engine").text();
-				selectedPlane.airport = theElement.children(".plane-airport").text();
+				window.selectedPlane.id = theElement.children(".plane-id").text();
+				window.selectedPlane.manufacture = theElement.children(".plane-manufacture").text();
+				window.selectedPlane.model = theElement.children(".plane-model").text();
+				window.selectedPlane.type = theElement.children(".plane-type").text();
+				window.selectedPlane.engine = theElement.children(".plane-engine").text();
+				window.selectedPlane.airport = theElement.children(".plane-airport").text();
 				
-				$(".current-plane").text("Selected Plane: " + selectedPlane.id);
+				$(".current-plane").text(selectedPlane.id);
 				$(".fly-button").removeAttr('disabled');
+				
 			//});
+		}
+		function loadMap(theAirport){
+			var theOptions = {
+				controls: {
+					panControl: true,
+					zoomControl: true,
+					mapTypeControl: true,
+					scaleControl: true,
+					streetViewControl: true,
+					overviewMapControl: true
+				},
+				scrollwheel: true,
+				maptype: 'TERRAIN',
+				center: [theAirport.latitude, theAirport.longitude],
+				zoom: 6
+			}
+			$("#map").gmap3({
+				map:{
+					options: theOptions
+				},
+				/*polyline:{
+					options:{
+					  strokeColor: "#0000FF",
+					  strokeOpacity: 1.0,
+					  strokeWeight: 2,
+					  path:[
+						[37.772323, -122.214897],
+						[21.291982, -157.821856],
+						[-18.142599, 178.431],
+						[-27.46758, 153.027892]
+					  ]
+					}
+				},*/
+				marker:{
+					latLng:[theAirport.latitude, theAirport.longitude],
+					
+				}
+			});
+		}
+		function addPlaneOnMap(thePlane){
+			$("#map").gmap3({
+				marker:{
+				  latLng:[thePlane.latitude, thePlane.longitude],
+				  options:{icon: "img/plane.png"},
+				  tag: thePlane.id,
+				  animation: google.maps.Animation.DROP
+				}
+			 });
+		}
+		function actionFlight(leButton) {
+		  movePlane(window.selectedPlane, window.flights[leButton.attr("flightNumber")]);
+		}
+		function movePlane(lePlane, leFlight){
+			$('#map').gmap3({action:'clear', tag:lePlane.id}).delay(3000);
+			lePlane.latitude = window.airport[leFlight.destination].latitude;
+			lePlane.longitude = window.airport[leFlight.destination].longitude;
+			alert(leFlight.destination);
+			$("#map").gmap3({
+				marker:{
+				  latLng:[lePlane.latitude, lePlane.longitude],
+				  options:{icon: "img/plane.png"},
+				  tag: lePlane.id
+				}
+			 });
 		}
 		
 	</script>
@@ -170,41 +243,8 @@
 		</footer>
 	</div>
 	<script type="text/javascript">
-		$(function() {
-			$("#map").gMap();
-		});
+		
 	</script>
-	<!--<script type="text/javascript">
-		var map;
-		var toronto = new google.maps.LatLng(43.676667, -79.630556);
-		var ottawa = new google.maps.LatLng(45.3225, -75.667222);
-		function initialize() {
-			var mapOptions = {
-				zoom: 7,
-				center: toronto,
-				mapTypeId: google.maps.MapTypeId.ROADMAP
-			};
-			
-			map = new google.maps.Map(document.getElementById('map-canvas'),
-			  mapOptions);
-			var marker=new google.maps.Marker({
-			  position: toronto,
-			  icon:'img/plane.png'
-			});
-			marker.setMap(map);
-			var myTrip=[toronto, ottawa];
-			var flightPath=new google.maps.Polyline({
-			  path:myTrip,
-			  strokeColor:"#0000FF",
-			  strokeOpacity:0.8,
-			  strokeWeight:2
-			  });
-
-			flightPath.setMap(map);
-		}
-
-		google.maps.event.addDomListener(window, 'load', initialize);
-    </script>-->
 
 </body>
 </html>

@@ -16,4 +16,12 @@
 	<Lat>45.3225</Lat>
 	<Long>-75.667222</Long>
   </Airport>
+  <Airport>
+    <Name>Montréal–Pierre Elliott Trudeau International Airport</Name>
+    <City>Montréal</City>
+    <Code>YUL</Code>
+	<Capacity>4</Capacity>
+	<Lat>45.470556</Lat>
+	<Long>-73.740833</Long>
+  </Airport>
 </Airports>

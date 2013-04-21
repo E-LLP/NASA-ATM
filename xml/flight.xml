@@ -4,7 +4,7 @@
 	<Number>AC757</Number>
 	<Airline>Air Canada</Airline>
 	<Source>YYZ</Source>
-	<Destination>YTZ</Destination>
+	<Destination>YOW</Destination>
 	<Duration>3000</Duration>
 	<Date>12/23/2013</Date>
 	<Stops></Stops>
@@ -13,7 +13,7 @@
 	<Number>AC111</Number>
 	<Airline>Air Canada</Airline>
 	<Source>YYZ</Source>
-	<Destination>YTZ</Destination>
+	<Destination>YUL</Destination>
 	<Duration>4000</Duration>
 	<Date>12/24/2013</Date>
 	<Stops></Stops>
@@ -21,7 +21,7 @@
   <Flight>
 	<Number>AC345</Number>
 	<Airline>Air Canada</Airline>
-	<Source>YTZ</Source>
+	<Source>YOW</Source>
 	<Destination>YYZ</Destination>
 	<Duration>7000</Duration>
 	<Date>12/27/2013</Date>
